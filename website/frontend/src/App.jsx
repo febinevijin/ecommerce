@@ -5,10 +5,12 @@ import { Badge, Container, Nav, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useContext } from "react";
 import { Store } from "./Store";
+import CartScreen from "./screens/CartScreen";
 
 function App() {
   const { state } = useContext(Store);
   const { cart } = state;
+  console.log(cart.cartItems);
   return (
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
@@ -23,7 +25,7 @@ function App() {
                   Cart
                   {cart.cartItems.length > 0 && (
                     <Badge pill bg="danger">
-                      {cart.cartItems.reduce((a,c)=> a + c.quantity,0)}
+                      {cart.cartItems.length}
                     </Badge>
                   )}
                 </Link>
@@ -37,6 +39,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomeScreen />} />
               <Route path="/product/:slug" element={<ProductScreen />} />
+              <Route path="/cart" element={<CartScreen/>} />
             </Routes>
           </Container>
         </main>
