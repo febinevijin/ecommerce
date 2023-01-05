@@ -9,31 +9,37 @@ import {
   Row,
 } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MessageBox from "../components/MessageBox";
 import { Store } from "../Store";
 import axios from "axios";
 
 const CartScreen = () => {
+
+const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
     cart: { cartItems },
   } = state;
 
   const updateCartHandler = async (item, quantity) => {
-    const { data } = await axios.get(`/api/products/${item._id}`)
-      if (data.countInStock < quantity) {
-        alert("Sorry, the product is out of stock");
-        return;
-      }
-      ctxDispatch({
-        type: "CART_ADD_ITEM",
-        payload: { ...item, quantity },
-      });
-  }
+    const { data } = await axios.get(`/api/products/${item._id}`);
+    if (data.countInStock < quantity) {
+      alert("Sorry, the product is out of stock");
+      return;
+    }
+    ctxDispatch({
+      type: "CART_ADD_ITEM",
+      payload: { ...item, quantity },
+    });
+  };
   const removeItemHandler = (item) => {
-    ctxDispatch({type: "CART_REMOVE_ITEM", payload:item})
-  }
+    ctxDispatch({ type: "CART_REMOVE_ITEM", payload: item });
+  };
+
+  const checkOutHandler = () => {
+    navigate("/sigin?redirect=/shipping");
+  };
 
   return (
     <div>
@@ -84,8 +90,10 @@ const CartScreen = () => {
                     </Col>
                     <Col md={3}>${item.price}</Col>
                     <Col md={2}>
-                      <Button variant="light"
-                      onClick={ ()=> removeItemHandler(item) }>
+                      <Button
+                        variant="light"
+                        onClick={() => removeItemHandler(item)}
+                      >
                         <i className="fas fa-trash"></i>
                       </Button>
                     </Col>
@@ -111,6 +119,7 @@ const CartScreen = () => {
                     <Button
                       type="button"
                       variant="primary"
+                      onClick={checkOutHandler}
                       disabled={cartItems.length === 0}
                     >
                       Proceed to Checkout
