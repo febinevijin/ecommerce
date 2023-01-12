@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Store } from "../Store";
 import { toast } from "react-toastify";
 import { getError } from "../util";
